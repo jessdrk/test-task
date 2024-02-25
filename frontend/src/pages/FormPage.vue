@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container d-flex flex-col w-5-24 bg-white"
+    class="d-flex flex-col w-5-24 bg-white pos-abs pos-center"
   >
     <div
       class="bg-grey-lighter d-flex flex-row flex-h-space-between pad-h-6 pad-v-4 flex-center"
