@@ -17,5 +17,8 @@ module.exports = {
       'error',
       { devDependencies: true },
     ],
+    'jsx-a11y/label-has-associated-control': 'off',
+    'jsx-a11y/label-has-for': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
   },
 };

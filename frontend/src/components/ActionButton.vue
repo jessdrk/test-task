@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button :class="color" class="btn">
     {{ buttonText }}
   </button>
 </template>
@@ -11,6 +11,13 @@ export default {
       type: String,
       default: '',
       required: true,
+    },
+    color: {
+      type: String,
+      default: 'btn-ghost',
+      validator(value) {
+        return ['btn-ghost', 'btn-primary'].includes(value);
+      },
     },
   },
 };
