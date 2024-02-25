@@ -198,7 +198,6 @@ export default {
           this.errors[fieldName] = true;
         }
       });
-      console.log(this.errors);
       return isValid;
     },
     async fetchPositions() {
