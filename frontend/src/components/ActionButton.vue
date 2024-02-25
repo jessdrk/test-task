@@ -10,6 +10,7 @@ export default {
     buttonText: {
       type: String,
       default: '',
+      required: true,
     },
   },
 };

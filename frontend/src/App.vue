@@ -4,10 +4,11 @@
       {{ headers.first }}
     </h1>
   </div>
-  <form class="changeForm" @submit.prevent="validateForm">
+  <form class="changeForm" @submit.prevent="submitForm">
     <h1>
       {{ headers.second }}
     </h1>
+    <img src="../src/assets/img/person.svg" alt="person" width="24" height="24">
     <action-input
       v-model.trim="firstName"
       type="text"
@@ -15,6 +16,7 @@
       :isRequired=true
       :isError="errors.firstName"
     />
+    <img src="../src/assets/img/person.svg" alt="person" width="24" height="24">
     <action-input
       v-model.trim="lastName"
       type="text"
@@ -22,6 +24,7 @@
       :isRequired=true
       :isError="errors.lastName"
     />
+    <img src="../src/assets/img/person.svg" alt="person" width="24" height="24">
     <action-input
       v-model.trim="patronymic"
       type="text"
@@ -29,6 +32,7 @@
       :isRequired=false
       :isError="errors.patronymic"
     />
+    <img src="../src/assets/img/numbers.svg" alt="numbers" width="24" height="24">
     <action-input
       v-model.trim="snils.maskedSnils"
       v-maska:[snils.optionsForSnils]="snils.bindedSnils"
@@ -37,16 +41,18 @@
       :isRequired=false
       :isError="errors.snils"
     />
-    <action-input
-      v-model.trim="position"
-      type="text"
+    <img src="../src/assets/img/briefcase.svg" alt="briefcase" width="24" height="24">
+    <action-select
+      :items="position.arrayOfPositions"
       labelText="Должность"
+      v-model="position.selectedPosition"
       :isRequired=true
       :isError="errors.position"
     />
     <h1>
       {{ headers.thirth }}
     </h1>
+    <img src="../src/assets/img/mobile.svg" alt="mobile" width="24" height="24">
     <action-input
       v-model.trim="tel.maskedTel"
       v-maska:[tel.optionsForTel]="tel.bindedTel"
@@ -55,6 +61,7 @@
       :isRequired=true
       :isError="errors.tel"
     />
+    <img src="../src/assets/img/mail.svg" alt="mail" width="24" height="24">
     <action-input
       v-model.trim="email"
       type="email"
@@ -74,14 +81,17 @@
 
 <script>
 import { vMaska } from 'maska';
+import axios from 'axios';
 import ActionInput from './components/ActionInput.vue';
 import ActionButton from './components/ActionButton.vue';
+import ActionSelect from './components/ActionSelect.vue';
 
 export default {
   name: 'App',
   components: {
     ActionInput,
     ActionButton,
+    ActionSelect,
   },
   directives: {
     maska: vMaska,
@@ -103,11 +113,14 @@ export default {
           unmasked: null,
         },
         optionsForSnils: {
-          mask: '###-###-### ##',
+          mask: '###-###-###-##',
           eager: true,
         },
       },
-      position: null,
+      position: {
+        arrayOfPositions: [],
+        selectedPosition: null,
+      },
       tel: {
         maskedTel: null,
         bindedTel: {
@@ -131,6 +144,9 @@ export default {
       },
     };
   },
+  created() {
+    this.fetchPositions();
+  },
   methods: {
     clearErrors() {
       Object.keys(this.errors).forEach((key) => {
@@ -143,8 +159,8 @@ export default {
         firstName: this.firstName,
         lastName: this.lastName,
         patronymic: this.patronymic,
-        snils: this.snils.bindedSnils.unmasked,
-        position: this.position,
+        snils: this.snils.bindedSnils.masked,
+        position: this.position.selectedPosition,
         tel: this.tel.bindedTel.masked,
         email: this.email,
       };
@@ -152,8 +168,8 @@ export default {
         firstName: /^[А-Я][а-яё]*$/,
         lastName: /^[А-Я][а-яё]*$/,
         patronymic: /^[А-Я][а-яё]*$/,
-        snils: /^\d{3}-\d{3}-\d{3} \d{2}$/,
-        position: /^[.+]*$/,
+        snils: /^\d{3}-\d{3}-\d{3}-\d{2}$/,
+        position: /^[А-Я][а-яё]*$/,
         tel: /^\+7-\d{3}-\d{3}-\d{4}$/,
         email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       };
@@ -169,6 +185,47 @@ export default {
         }
       });
       return isValid;
+    },
+    async fetchPositions() {
+      try {
+        const response = await axios.get('http://localhost:3000/positions');
+        this.position.arrayOfPositions = response.data;
+      } catch (error) {
+        console.error('Ошибка при получении списка должностей:', error);
+      }
+    },
+    createUser() {
+      const data = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        patronymic: this.patronymic,
+        snils: this.snils.bindedSnils.unmasked,
+        position: this.position.selectedPosition,
+        tel: this.tel.bindedTel.unmasked,
+        email: this.email,
+      };
+      const user = {};
+      const entries = Object.entries(data);
+      entries.map(([key, value]) => {
+        if (value !== null || value !== '') {
+          user[key] = value;
+        }
+        return true;
+      });
+      return user;
+    },
+    async submitForm() {
+      if (this.validateForm()) {
+        const user = this.createUser();
+        try {
+          const response = await axios.post('http://localhost:3000/submit-form', user);
+          if (response.status === 200) {
+            console.log(response.status);
+          }
+        } catch (error) {
+          console.error('Ошибка:', error.response.data.errors);
+        }
+      }
     },
   },
 };

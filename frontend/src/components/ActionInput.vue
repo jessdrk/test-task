@@ -22,14 +22,17 @@ export default {
     labelText: {
       type: String,
       default: '',
+      required: true,
     },
     isRequired: {
       type: Boolean,
       default: false,
+      required: true,
     },
     type: {
       type: String,
       default: '',
+      required: true,
     },
     modelValue: {
       type: String,
@@ -38,6 +41,7 @@ export default {
     isError: {
       type: Boolean,
       default: false,
+      required: true,
     },
   },
   computed: {
