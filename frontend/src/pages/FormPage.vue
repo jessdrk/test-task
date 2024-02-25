@@ -5,23 +5,16 @@
     <div
       class="bg-grey-lighter d-flex flex-row flex-h-space-between pad-h-6 pad-v-4 flex-center"
     >
-      <h2
-        class="h2 mar-none text-bold color-body"
-          style="font-size: var(--font-size-base);
-          font-family: var(--font-family-headings);"
-      >
-        {{ headers.first }}
-      </h2>
+      <action-h2
+        text="Заголовок"
+      />
       <img class="cursor-pointer" src="../assets/img/clear.svg" alt="clear">
     </div>
     <form class="d-flex flex-col" @submit.prevent="submitForm">
-      <h2
-        class="h2 mar-none text-bold color-body pad-top-4 pad-left-6 mar-bot-4"
-        style="font-size: var(--font-size-base);
-          font-family: var(--font-family-headings)"
-      >
-        {{ headers.second }}
-      </h2>
+      <action-h2
+        text="Заголовок"
+        class="pad-top-4 pad-left-6 mar-bot-4"
+      />
       <action-input
         v-model.trim="firstName"
         type="text"
@@ -63,13 +56,10 @@
         :isError="errors.position"
         pickedIcon="briefcaseIcon"
       />
-      <h2
-        class="h2 mar-none text-bold color-body pad-top-4 pad-left-6 mar-bot-4"
-        style="font-size: var(--font-size-base);
-          font-family: var(--font-family);"
-      >
-        {{ headers.thirth }}
-      </h2>
+      <action-h2
+        text="Заголовок"
+        class="pad-top-4 pad-left-6 mar-bot-4"
+      />
       <action-input
         v-model.trim="tel.maskedTel"
         v-maska:[tel.optionsForTel]="tel.bindedTel"
@@ -112,6 +102,7 @@ import 'goodt-framework-css';
 import ActionInput from '../components/ActionInput.vue';
 import ActionButton from '../components/ActionButton.vue';
 import ActionSelect from '../components/ActionSelect.vue';
+import ActionH2 from '../components/ActionH2.vue';
 
 export default {
   name: 'App',
@@ -119,17 +110,13 @@ export default {
     ActionInput,
     ActionButton,
     ActionSelect,
+    ActionH2,
   },
   directives: {
     maska: vMaska,
   },
   data() {
     return {
-      headers: {
-        first: 'Заголовок',
-        second: 'Заголовок',
-        thirth: 'Заголовок',
-      },
       firstName: null,
       lastName: null,
       patronymic: null,
