@@ -11,9 +11,3 @@ export default {
   components: { FormPage },
 };
 </script>
-
-<style>
-.invalid {
-  color: var(--color-red);
-}
-</style>

@@ -3,7 +3,7 @@
     <label
       for="input"
       class="mar-h-8 color-primary"
-      :class="{'invalid': isError}"
+      :class="{'color-invalid': isError}"
       style="
         font-family: var(--font-family);
         font-size: var(--font-size-base-hd)"

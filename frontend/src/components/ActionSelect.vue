@@ -5,7 +5,7 @@
       for="select"
       style="font-family: var(--font-family);
         font-size: var(--font-size-base-hd)"
-      :class="{'invalid': isError}"
+      :class="{'color-invalid': isError}"
     >
       {{ labelText + (isRequired ? '*' : '')}}
     </label>
